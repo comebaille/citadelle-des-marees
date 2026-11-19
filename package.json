@@ -1,0 +1,20 @@
+{
+  "name": "citadelle-des-marees",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --configLoader native",
+    "build": "tsc --noEmit && vite build --configLoader native",
+    "preview": "vite preview --configLoader native --host 127.0.0.1 --port 4173",
+    "test": "vitest run --configLoader runner",
+    "test:watch": "vitest --configLoader runner",
+    "verify:mobile": "node scripts/verify-mobile.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.52.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.4"
+  }
+}
