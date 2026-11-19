@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#040d1d" />
+    <meta name="description" content="Citadelle des marées — Tower defense bioluminescent dans une cité engloutie, pensé pour iPhone et jouable hors ligne." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Citadelle" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <title>Citadelle des marées</title>
+    <script type="module" crossorigin src="./assets/index-BWQ7EK_7.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B8kaw_k5.css">
+  </head>
+  <body>
+    <div id="app" class="app-shell" data-screen="title">
+      <!-- Top HUD (visible during gameplay) -->
+      <header id="game-hud" class="game-hud" aria-label="Tableau de bord">
+        <div class="hud-stats" role="status" aria-live="polite">
+          <div class="stat-pill stat-lives" title="Points de vie de la Citadelle">
+            <span class="stat-icon" aria-hidden="true">♥</span>
+            <span id="hud-lives" class="stat-value">20</span>
+          </div>
+          <div class="stat-pill stat-pearls" title="Perles disponibles">
+            <span class="stat-icon" aria-hidden="true">◈</span>
+            <span id="hud-pearls" class="stat-value">150</span>
+          </div>
+          <div class="stat-pill stat-wave" title="Progression des vagues">
+            <span id="hud-wave" class="stat-value">Vague 0/8</span>
+          </div>
+          <div class="stat-pill stat-score" title="Score actuel">
+            <span class="stat-icon" aria-hidden="true">★</span>
+            <span id="hud-score" class="stat-value">0</span>
+          </div>
+        </div>
+
+        <div class="hud-actions" role="toolbar" aria-label="Contrôles de la partie">
+          <button id="btn-home" type="button" class="icon-btn" aria-label="Retour à l'accueil" title="Accueil">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 10.5 12 3l9 7.5" />
+              <path d="M5.5 9.5V20h13V9.5" />
+            </svg>
+          </button>
+          <button id="btn-pause" type="button" class="icon-btn" aria-label="Mettre en pause" title="Pause (Espace)">
+            <svg id="icon-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor">
+              <rect x="6" y="4" width="4" height="16" rx="1.2" />
+              <rect x="14" y="4" width="4" height="16" rx="1.2" />
+            </svg>
+            <svg id="icon-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor" hidden>
+              <path d="M6.5 4.8a1 1 0 0 1 1.5-.86l11 6.7a1 1 0 0 1 0 1.72l-11 6.7A1 1 0 0 1 6.5 18.2V4.8Z" />
+            </svg>
+          </button>
+          <button id="btn-speed" type="button" class="icon-btn speed-btn" aria-label="Accélérer la vitesse" title="Vitesse 1× / 2× (F)">
+            <span id="speed-label">1×</span>
+          </button>
+          <button id="btn-mute" type="button" class="icon-btn" aria-label="Couper le son" title="Son / Muet (M)">
+            <svg id="icon-sound-on" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+              <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+              <path d="M18.5 6a8.5 8.5 0 0 1 0 12" />
+            </svg>
+            <svg id="icon-sound-off" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden>
+              <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+              <path d="m22 9-6 6" />
+              <path d="m16 9 6 6" />
+            </svg>
+          </button>
+          <button id="btn-restart" type="button" class="icon-btn" aria-label="Recommencer la partie" title="Recommencer">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+          </button>
+          <button id="btn-help" type="button" class="icon-btn" aria-label="Ouvrir le tutoriel" title="Tutoriel">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9.5" />
+              <path d="M9.5 9.2a2.6 2.6 0 0 1 5 .8c0 1.7-2.5 2.1-2.5 3.6" />
+              <circle cx="12" cy="17.2" r="0.7" fill="currentColor" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Battlefield Stage -->
+      <main id="stage" class="stage" aria-label="Champ de bataille de la Citadelle">
+        <canvas id="game-canvas" class="game-canvas" aria-label="Carte navigable de la Citadelle des marées"></canvas>
+
+        <!-- Boss HP Banner -->
+        <div id="boss-bar" class="boss-bar" hidden role="status" aria-live="polite">
+          <div class="boss-bar-head">
+            <span class="boss-title">Léviathan des Abysses</span>
+            <span id="boss-hp-text" class="boss-hp-text">1550 / 1550</span>
+          </div>
+          <div class="boss-track">
+            <div id="boss-hp-fill" class="boss-fill" style="width: 100%"></div>
+          </div>
+        </div>
+
+        <!-- Non-blocking Floating Notice Toast -->
+        <div id="notice-pill" class="notice-pill" hidden role="status" aria-live="polite"></div>
+
+        <!-- Pause Overlay Banner (subtle, lets player inspect map) -->
+        <div id="pause-banner" class="pause-banner" hidden>
+          <span>Pause</span>
+          <button id="btn-resume-inline" type="button" class="pill-btn">Reprendre</button>
+        </div>
+
+        <!-- Subtle Camera Controls tucked over lower-right abyss border -->
+        <div id="camera-controls" class="camera-controls" aria-label="Zoom de la carte">
+          <button id="btn-zoom-in" type="button" class="cam-btn" aria-label="Zoomer sur la carte" title="Zoomer (+)">+</button>
+          <button id="btn-zoom-reset" type="button" class="cam-btn" aria-label="Recentrer la carte" title="Recentrer">⌖</button>
+        </div>
+      </main>
+
+      <!-- Bottom One-Thumb Action Dock (visible during gameplay) -->
+      <footer id="game-dock" class="game-dock" aria-label="Actions de défense">
+        <!-- Wave Launch / Progress Row -->
+        <div class="wave-strip">
+          <button id="btn-start-wave" type="button" class="wave-cta">
+            <span class="wave-cta-icon" aria-hidden="true">▶</span>
+            <span id="wave-cta-label">Lancer la vague 1/8</span>
+            <span id="wave-cta-sub" class="wave-cta-sub">Éclaireurs du récif</span>
+          </button>
+
+          <div id="wave-progress-box" class="wave-progress-box" hidden>
+            <div class="wave-progress-meta">
+              <span id="wave-active-title" class="wave-active-title">Vague 1/8 · Éclaireurs</span>
+              <span id="wave-remaining-label" class="wave-remaining">7 restants</span>
+            </div>
+            <div class="wave-progress-track">
+              <div id="wave-progress-fill" class="wave-progress-fill" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Build Mode: 3 Distinct Towers -->
+        <div id="build-palette" class="build-palette" role="group" aria-label="Choisir une tour à bâtir">
+          <button type="button" class="tower-card" data-tower="harpon" aria-pressed="false">
+            <div class="tower-card-top">
+              <svg class="tower-glyph glyph-harpon" viewBox="0 0 36 36" width="24" height="24" aria-hidden="true">
+                <polygon points="18,3 25,18 18,31 11,18" fill="none" stroke="currentColor" stroke-width="2.2" />
+                <line x1="18" y1="5" x2="18" y2="30" stroke="currentColor" stroke-width="2" />
+                <circle cx="18" cy="18" r="3.6" fill="currentColor" />
+              </svg>
+              <span class="tower-cost">◈ 50</span>
+            </div>
+            <span class="tower-name">Harpon</span>
+            <span class="tower-role">Tir rapide</span>
+          </button>
+
+          <button type="button" class="tower-card" data-tower="mortier" aria-pressed="false">
+            <div class="tower-card-top">
+              <svg class="tower-glyph glyph-mortier" viewBox="0 0 36 36" width="24" height="24" aria-hidden="true">
+                <circle cx="18" cy="18" r="11" fill="none" stroke="currentColor" stroke-width="2.2" />
+                <circle cx="18" cy="18" r="5" fill="currentColor" />
+                <path d="M18 3v5M18 28v5M3 18h5M28 18h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <span class="tower-cost">◈ 80</span>
+            </div>
+            <span class="tower-name">Mortier</span>
+            <span class="tower-role">Zone</span>
+          </button>
+
+          <button type="button" class="tower-card" data-tower="prisme" aria-pressed="false">
+            <div class="tower-card-top">
+              <svg class="tower-glyph glyph-prisme" viewBox="0 0 36 36" width="24" height="24" aria-hidden="true">
+                <polygon points="18,4 30,18 18,32 6,18" fill="none" stroke="currentColor" stroke-width="2.2" />
+                <polygon points="18,10 24,18 18,26 12,18" fill="currentColor" />
+              </svg>
+              <span class="tower-cost">◈ 65</span>
+            </div>
+            <span class="tower-name">Prisme</span>
+            <span class="tower-role">Ralentit</span>
+          </button>
+        </div>
+
+        <!-- Inspector Mode (replaces Build Palette cleanly when tapping a placed tower) -->
+        <div id="tower-inspector" class="tower-inspector" hidden>
+          <div class="inspector-head">
+            <div class="inspector-title-group">
+              <span id="inspector-name" class="inspector-name">Harpon Corail</span>
+              <span id="inspector-level" class="inspector-level">Niv. 1</span>
+            </div>
+            <span id="inspector-stats" class="inspector-stats">Dég. 16 · Portée 2,9</span>
+            <button id="btn-inspector-close" type="button" class="inspector-close" aria-label="Fermer l'inspecteur">✕</button>
+          </div>
+          <div class="inspector-actions">
+            <button id="btn-upgrade" type="button" class="action-btn action-upgrade">
+              <span id="btn-upgrade-label">⬆ Améliorer · ◈ 45</span>
+            </button>
+            <button id="btn-sell" type="button" class="action-btn action-sell">
+              <span id="btn-sell-label">◈ Vendre · +35</span>
+            </button>
+          </div>
+        </div>
+      </footer>
+
+      <!-- Title Overlay (floats gracefully over the live animated bioluminescent sunken city!) -->
+      <section id="title-overlay" class="title-overlay" aria-labelledby="game-title">
+        <div class="title-card">
+          <div class="title-emblem" aria-hidden="true">
+            <img src="./icons/icon.svg" alt="" width="56" height="56" />
+          </div>
+          <p class="title-kicker">Cité engloutie · Tower Defense</p>
+          <h1 id="game-title" class="title-heading">Citadelle des marées</h1>
+          <p class="title-tagline">
+            Dressez des tours bioluminescentes, déviez les courants et repoussez 8 vagues jusqu'au Léviathan.
+          </p>
+
+          <div class="record-strip">
+            <span class="record-label">Meilleur score</span>
+            <strong id="title-best-score" class="record-value">0</strong>
+          </div>
+
+          <!-- Map Variant Selector -->
+          <div class="map-selector" role="radiogroup" aria-label="Choisir une carte">
+            <button type="button" class="map-option" data-map="atoll" role="radio" aria-checked="true">
+              <span class="map-opt-head">
+                <strong>Atoll des Brisants</strong>
+                <span class="map-badge">Équilibrée</span>
+              </span>
+              <span class="map-opt-sub">Double courbe corallienne &amp; bassin central</span>
+            </button>
+            <button type="button" class="map-option" data-map="detroit" role="radio" aria-checked="false">
+              <span class="map-opt-head">
+                <strong>Détroit des Lanternes</strong>
+                <span class="map-badge">Labyrinthe</span>
+              </span>
+              <span class="map-opt-sub">Double couloir &amp; grande place à sculpter</span>
+            </button>
+            <button type="button" class="map-option" data-map="fosse" role="radio" aria-checked="false">
+              <span class="map-opt-head">
+                <strong>Fosse des Anciens</strong>
+                <span class="map-badge">Tactique</span>
+              </span>
+              <span class="map-opt-sub">Méandres profonds &amp; raccourcis à dévier</span>
+            </button>
+            <button type="button" class="map-option" data-map="seeded" role="radio" aria-checked="false">
+              <span class="map-opt-head">
+                <strong>Récif Aléatoire</strong>
+                <span class="map-badge">Graine</span>
+              </span>
+              <span class="map-opt-sub">Carte générée de façon reproductible</span>
+            </button>
+          </div>
+
+          <!-- Seed Input Row (visible when Récif Aléatoire selected) -->
+          <div id="seed-row" class="seed-row" hidden>
+            <label for="seed-input" class="seed-label">Graine</label>
+            <input id="seed-input" class="seed-input" type="text" value="MAREE-42" maxlength="16" autocomplete="off" spellcheck="false" />
+            <button id="btn-random-seed" type="button" class="seed-dice-btn" aria-label="Nouvelle graine aléatoire" title="Nouvelle graine">🎲</button>
+          </div>
+
+          <div class="title-cta-group">
+            <button id="btn-play-start" type="button" class="primary-cta">Plonger dans la défense</button>
+            <div class="title-secondary-row">
+              <button id="btn-title-tutorial" type="button" class="ghost-btn">Tutoriel</button>
+              <button id="btn-title-mute" type="button" class="ghost-btn">Son : Activé</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Native Modal Dialog: Brief French Tutorial -->
+    <dialog id="tutorial-dialog" class="game-dialog" closedby="any" aria-labelledby="tutorial-title">
+      <form method="dialog" class="dialog-shell">
+        <div class="dialog-head">
+          <h2 id="tutorial-title">Guide de la Citadelle</h2>
+          <button type="submit" value="close" class="dialog-x" aria-label="Fermer le tutoriel">✕</button>
+        </div>
+        <ul class="tutorial-list">
+          <li>
+            <strong>Construire à un pouce</strong> : sélectionnez une tour en bas puis touchez une dalle libre (ou touchez d'abord une dalle, puis une tour).
+          </li>
+          <li>
+            <strong>Courants &amp; déviation</strong> : les canaux bleus sont interdits, mais les bassins ouverts peuvent accueillir des tours pour allonger le trajet — sans jamais bloquer toute issue.
+          </li>
+          <li>
+            <strong>Trois synergies</strong> : <em>Harpon</em> (tir rapide), <em>Mortier</em> (explosion de zone), <em>Prisme</em> (faisceau ralentisseur). Touchez une tour posée pour l'améliorer ou la vendre.
+          </li>
+          <li>
+            <strong>Survivre aux 8 vagues</strong> : protégez les 20 PV du cœur cristallin jusqu'au <em>Léviathan des Abysses</em>. Pincez ou utilisez <strong>+ / ⌖</strong> pour naviguer la carte.
+          </li>
+        </ul>
+        <button type="submit" value="ok" class="primary-cta dialog-cta" autofocus>Compris, défendre la Citadelle</button>
+      </form>
+    </dialog>
+
+    <!-- Native Modal Dialog: Victory / Defeat Summary -->
+    <dialog id="endgame-dialog" class="game-dialog" aria-labelledby="endgame-title">
+      <form method="dialog" class="dialog-shell endgame-shell">
+        <p id="endgame-badge" class="endgame-badge" hidden>Nouveau record !</p>
+        <h2 id="endgame-title" class="endgame-title">Victoire !</h2>
+        <p id="endgame-subtitle" class="endgame-subtitle">La Citadelle brille toujours dans les abysses.</p>
+
+        <dl class="endgame-metrics">
+          <div>
+            <dt>Score</dt>
+            <dd id="end-score">0</dd>
+          </div>
+          <div>
+            <dt>Record</dt>
+            <dd id="end-best">0</dd>
+          </div>
+          <div>
+            <dt>Vague</dt>
+            <dd id="end-wave">8/8</dd>
+          </div>
+          <div>
+            <dt>Ennemis</dt>
+            <dd id="end-kills">0</dd>
+          </div>
+        </dl>
+
+        <div class="endgame-actions">
+          <button type="submit" value="restart" class="primary-cta" autofocus>Rejouer</button>
+          <button type="submit" value="title" class="ghost-btn">Changer de carte</button>
+        </div>
+      </form>
+    </dialog>
+
+  </body>
+</html>
